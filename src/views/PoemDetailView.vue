@@ -28,7 +28,7 @@
                 {{ isFavorite ? '已收藏' : '收藏' }}
               </el-button>
               <el-button :icon="Share" @click="handleShare">分享</el-button>
-              <el-button :icon="Volume" @click="playAudio">朗读</el-button>
+              <el-button :icon="VideoPlay" @click="playAudio">朗读</el-button>
             </div>
           </div>
 
@@ -111,7 +111,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Star, Share, Volume } from '@element-plus/icons-vue'
+import { Star, Share, VideoPlay } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
