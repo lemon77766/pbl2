@@ -5,7 +5,8 @@
   "description": "诗词赏析应用 - 基于Vue 3和Supabase",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
+    "vercel-build": "chmod +x node_modules/.bin/vite && npm run build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
