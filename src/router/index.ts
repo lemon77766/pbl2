@@ -9,14 +9,19 @@ const router = createRouter({
       component: () => import('@/views/HomeView.vue')
     },
     {
-      path: '/poem/:id',
-      name: 'poem-detail',
-      component: () => import('@/views/PoemDetailView.vue')
+      path: '/appreciation',
+      name: 'appreciation',
+      component: () => import('@/views/AppreciationView.vue')
     },
     {
-      path: '/search',
-      name: 'search',
-      component: () => import('@/views/SearchView.vue')
+      path: '/history',
+      name: 'history',
+      component: () => import('@/views/HistoryView.vue')
+    },
+    {
+      path: '/appreciation',
+      name: 'appreciation',
+      component: () => import('@/views/AppreciationView.vue')
     },
     {
       path: '/favorites',
@@ -25,8 +30,7 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-      name: 'not-found',
-      component: () => import('@/views/NotFoundView.vue')
+      redirect: '/'
     }
   ]
 })

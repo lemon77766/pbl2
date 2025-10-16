@@ -1,19 +1,25 @@
-// 全局样式变量
+// 全局样式变量（土金主题）
 :root {
-  --primary-color: #8b4513;
-  --secondary-color: #d2691e;
-  --accent-color: #f4a460;
-  --text-color: #333;
-  --text-light: #666;
-  --bg-color: #f5f5f5;
-  --border-color: #ddd;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 土金主题色（仿古雅致） */
+  --primary-color: #9C7B3E;   /* 土金主色 */
+  --secondary-color: #B08D57; /* 金棕辅色 */
+  --accent-color: #D6B370;    /* 高光强调 */
+  --text-color: #2B2620;      /* 深文字 */
+  --text-light: #6B604F;      /* 次级文字 */
+
+  /* 背景与表面 */
+  --bg-color: #F7F3E8;        /* 全局背景偏米色 */
+  --bg-surface: #FFFFFF;      /* 卡片/表面 */
+  --bg-muted: #F2ECD9;        /* 弱背景 */
+  --border-color: #E6DFC9;
+
+  /* 阴影体系 */
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.10);
 }
 
-// 重置样式
-* {
-  box-sizing: border-box;
-}
+/* 重置样式 */
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -23,7 +29,7 @@ body {
   color: var(--text-color);
 }
 
-// 工具类
+/* 工具类 */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -46,27 +52,16 @@ body {
 .p-4 { padding: 1.5rem; }
 .p-5 { padding: 3rem; }
 
-// 响应式设计
+/* 响应式设计 */
 @media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-  }
+  .container { padding: 0 1rem; }
 }
 
-// 自定义滚动条
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
+/* 自定义滚动条 */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #ece7d7; }
 ::-webkit-scrollbar-thumb {
   background: var(--primary-color);
   border-radius: 3px;
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-color);
-}
+::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }

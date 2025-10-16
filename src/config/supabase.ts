@@ -39,6 +39,7 @@ export type Database = {
           dynasty: string
           content: string
           translation?: string
+          background?: string
           created_at: string
           updated_at: string
         }
@@ -49,24 +50,39 @@ export type Database = {
         Row: {
           id: string
           name: string
-          biography: string
+          biography?: string
           dynasty: string
           created_at: string
+          updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['poem_authors']['Row'], 'id' | 'created_at'>
+        Insert: Omit<Database['public']['Tables']['poem_authors']['Row'], 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Database['public']['Tables']['poem_authors']['Insert']>
       }
       poem_analysis: {
         Row: {
           id: string
           poem_id: string
-          background: string
           analysis_content: string
-          artistic_features: string
+          artistic_features?: string
+          line_analysis?: any
+          overall_analysis?: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['poem_analysis']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['poem_analysis']['Insert']>
+      }
+      poem_keywords: {
+        Row: {
+          id: string
+          poem_id: string
+          word: string
+          explanation: string
+          origin?: string
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['poem_analysis']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['public']['Tables']['poem_analysis']['Insert']>
+        Insert: Omit<Database['public']['Tables']['poem_keywords']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['poem_keywords']['Insert']>
       }
       user_favorites: {
         Row: {
@@ -77,6 +93,18 @@ export type Database = {
         }
         Insert: Omit<Database['public']['Tables']['user_favorites']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['user_favorites']['Insert']>
+      }
+      user_notes: {
+        Row: {
+          id: string
+          user_id: string
+          poem_id: string
+          note_content: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['user_notes']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['user_notes']['Insert']>
       }
     }
   }
