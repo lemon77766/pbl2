@@ -5,33 +5,6 @@
 
     <!-- 横幅 Hero -->
     <section class="hero">
-      <div class="hero-inner">
-        <h1>古韵诗语</h1>
-        <p>探索中华古典诗词的无限魅力</p>
-        
-        <!-- 搜索框 -->
-        <div class="search-container">
-          <el-input
-            v-model="keyword"
-            placeholder="搜索诗词、作者或关键词..."
-            size="large"
-            @keyup.enter="goSearch"
-            clearable
-          >
-            <template #prefix>
-              <el-icon><Search /></el-icon>
-            </template>
-          </el-input>
-          <el-button 
-            type="primary" 
-            size="large" 
-            @click="goSearch"
-            class="search-btn"
-          >
-            搜索
-          </el-button>
-        </div>
-      </div>
       <div class="ink-bg" aria-hidden="true"></div>
     </section>
 
@@ -47,7 +20,7 @@
           <p>
             在这里，你可以浏览名家名篇、了解创作背景、欣赏书法碑帖，也能搜寻一句触动心弦的诗句。愿你在字里行间，遇见自我。
           </p>
-          <el-button type="primary" class="intro-btn" @click="goExplore">更多内容</el-button>
+          <el-button type="primary" class="intro-btn" @click="goSearch">探索诗词</el-button>
         </div>
       </div>
       <div class="quote">山重水复疑无路，柳暗花明又一村。</div>
@@ -68,7 +41,7 @@
           </div>
         </div>
         <div class="more">
-          <el-button type="primary" plain @click="goExplore">查看更多</el-button>
+          <el-button type="primary" plain @click="goAppreciation">查看更多</el-button>
         </div>
       </div>
     </section>
@@ -84,10 +57,10 @@
           <div class="footer-col">
             <h4 class="footer-subtitle">快捷链接</h4>
             <ul class="footer-links">
-              <li><a href="/">首页</a></li>
-              <li><a href="/">诗词列表</a></li>
-              <li><a href="/">互动学习</a></li>
-              <li><a href="/">我的收藏</a></li>
+              <li><a href="/" @click.prevent="goExplore">首页</a></li>
+              <li><a href="/appreciation" @click.prevent="goAppreciation">诗词鉴赏</a></li>
+              <li><a href="/history" @click.prevent="goHistory">诗词历史</a></li>
+              <li><a href="/favorites" @click.prevent="goFavorites">我的收藏</a></li>
             </ul>
           </div>
 
@@ -122,10 +95,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import SiteHeader from '@/components/SiteHeader.vue'
+import { poemApi } from '@/api/poemApi'
 
 const router = useRouter()
 const keyword = ref('')
@@ -136,7 +110,19 @@ const goSearch = () => {
 }
 
 const goExplore = () => {
-  router.push('/')
+  router.push('/search')
+}
+
+const goAppreciation = () => {
+  router.push('/appreciation')
+}
+
+const goHistory = () => {
+  router.push('/history')
+}
+
+const goFavorites = () => {
+  router.push('/favorites')
 }
 
 const gallery = [
@@ -161,10 +147,10 @@ const gallery = [
   overflow: hidden;
   background: url("/images/hero-banner.jpg") top center no-repeat;
   background-size: cover;
-  min-height: 400px; /* 增加高度以容纳搜索框 */
+  min-height: 360px; /* 横幅高度，保证完整展示 */
   margin-bottom: 32px; /* 与下方内容留白 */
   .hero-inner {
-    padding: 80px 20px 100px;
+    padding: 56px 20px 80px;
     text-align: center;
     h1 {
       margin: 0 0 10px;
@@ -173,31 +159,9 @@ const gallery = [
       letter-spacing: 1px;
     }
     p {
-      margin: 0 0 30px;
+      margin: 0;
       color: var(--text-light);
       font-size: 16px;
-    }
-    
-    .search-container {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      max-width: 600px;
-      margin: 0 auto;
-      
-      :deep(.el-input) {
-        flex: 1;
-      }
-      
-      .search-btn {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-        
-        &:hover {
-          background-color: #8B6B3D;
-          border-color: #8B6B3D;
-        }
-      }
     }
   }
   .ink-bg { display: none; }

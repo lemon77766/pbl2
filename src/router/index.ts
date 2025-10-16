@@ -19,14 +19,14 @@ const router = createRouter({
       component: () => import('@/views/HistoryView.vue')
     },
     {
-      path: '/appreciation',
-      name: 'appreciation',
-      component: () => import('@/views/AppreciationView.vue')
-    },
-    {
       path: '/favorites',
       name: 'favorites',
       component: () => import('@/views/FavoritesView.vue')
+    },
+    {
+      path: '/poem/:id',
+      name: 'poem-detail',
+      component: () => import('@/views/PoemDetailView.vue')
     },
     {
       path: '/search',

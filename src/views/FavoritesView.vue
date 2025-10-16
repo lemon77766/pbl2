@@ -1,373 +1,224 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { getPoemsByIds } from '@/api/poemApi'
+import type { Poem } from '@/api/poemApi'
+
+const userStore = useUserStore()
+const favoritePoems = ref<Poem[]>([])
+const loading = ref(false)
+
+// 加载收藏的诗词
+const loadFavoritePoems = async () => {
+  loading.value = true
+  try {
+    const favoriteIds = userStore.getFavorites()
+    if (favoriteIds.length > 0) {
+      favoritePoems.value = await getPoemsByIds(favoriteIds)
+    } else {
+      favoritePoems.value = []
+    }
+  } catch (error) {
+    console.error('加载收藏诗词失败:', error)
+    favoritePoems.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+// 移除收藏
+const removeFromFavorites = (poemId: string) => {
+  userStore.removeFavorite(poemId)
+  // 从列表中移除
+  favoritePoems.value = favoritePoems.value.filter(poem => poem.id !== poemId)
+}
+
+// 清空收藏
+const clearAllFavorites = () => {
+  userStore.clearFavorites()
+  favoritePoems.value = []
+}
+
+onMounted(() => {
+  loadFavoritePoems()
+})
+</script>
+
 <template>
-  <div class="favorites">
-    <SiteHeader />
-    <header class="page-header">
-      <div class="container">
-        <h1>我的收藏</h1>
-        <p>在这里查看你标记喜欢的诗词与句子。</p>
+  <div class="favorites-container">
+    <div class="favorites-header">
+      <h1>我的收藏</h1>
+      <div class="favorites-info">
+        <span>共收藏 {{ userStore.getFavoriteCount() }} 首诗词</span>
+        <el-button 
+          v-if="favoritePoems.length > 0" 
+          type="danger" 
+          size="small" 
+          @click="clearAllFavorites"
+        >
+          清空收藏
+        </el-button>
       </div>
-    </header>
-    <main class="container">
-      <div v-if="isLoading" class="loading-container">
-        <LoadingSpinner />
-      </div>
-      
-      <div v-else-if="favorites.length === 0" class="empty-state">
-        <div class="empty-icon">📚</div>
-        <h3>暂无收藏</h3>
-        <p>你还没有收藏任何诗词，快去发现你喜欢的诗词吧！</p>
-        <el-button type="primary" @click="goToHome">浏览诗词</el-button>
-      </div>
-      
-      <div v-else class="favorites-grid">
-        <div class="filters">
-          <el-input
-            v-model="searchKeyword"
-            placeholder="搜索收藏的诗词..."
-            clearable
-            @input="filterFavorites"
-            class="search-input"
-          >
-            <template #prefix>
-              <el-icon><Search /></el-icon>
-            </template>
-          </el-input>
-          
-          <el-select
-            v-model="selectedDynasty"
-            placeholder="按朝代筛选"
-            clearable
-            @change="filterFavorites"
-            class="dynasty-filter"
-          >
-            <el-option
-              v-for="dynasty in dynasties"
-              :key="dynasty"
-              :label="dynasty"
-              :value="dynasty"
-            />
-          </el-select>
+    </div>
+
+    <div v-if="loading" class="loading-container">
+      <el-skeleton :rows="5" animated />
+    </div>
+
+    <div v-else-if="favoritePoems.length === 0" class="empty-state">
+      <el-empty description="暂无收藏的诗词">
+        <el-button type="primary" @click="$router.push('/')">去发现诗词</el-button>
+      </el-empty>
+    </div>
+
+    <div v-else class="favorites-list">
+      <div 
+        v-for="poem in favoritePoems" 
+        :key="poem.id" 
+        class="favorite-item"
+      >
+        <div class="poem-content">
+          <h3 class="poem-title">{{ poem.title }}</h3>
+          <p class="poem-author">作者：{{ poem.author_name }}</p>
+          <p class="poem-text">{{ poem.content.replace(/\\n/g, '\n') }}</p>
         </div>
-        
-        <div class="favorites-list">
-          <div
-            v-for="favorite in filteredFavorites"
-            :key="favorite.id"
-            class="favorite-card"
+        <div class="poem-actions">
+          <el-button 
+            type="primary" 
+            size="small"
+            @click="$router.push(`/poem/${poem.id}`)"
           >
-            <div class="card-content">
-              <h3 class="poem-title">{{ favorite.poems?.title }}</h3>
-              <p class="poem-author">{{ favorite.poems?.poem_authors?.name }} · {{ favorite.poems?.dynasty }}</p>
-              <p class="poem-excerpt">{{ favorite.poems?.content?.split('\n')[0] }}...</p>
-              <div class="card-actions">
-                <span class="added-date">收藏于 {{ formatDate(favorite.created_at) }}</span>
-                <div class="action-buttons">
-                  <el-button
-                    type="primary"
-                    link
-                    @click="viewPoemDetail(favorite.poems?.id)"
-                  >
-                    查看详情
-                  </el-button>
-                  <el-button
-                    type="danger"
-                    link
-                    @click="removeFavorite(favorite.id)"
-                  >
-                    取消收藏
-                  </el-button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div v-if="filteredFavorites.length === 0 && favorites.length > 0" class="no-results">
-          <p>没有找到匹配的收藏</p>
+            查看详情
+          </el-button>
+          <el-button 
+            type="danger" 
+            size="small"
+            @click="removeFromFavorites(poem.id)"
+          >
+            取消收藏
+          </el-button>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Search } from '@element-plus/icons-vue'
-import SiteHeader from '@/components/SiteHeader.vue'
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { usePoemStore } from '@/stores/poem'
-import { useAuthStore } from '@/stores/auth'
-
-const router = useRouter()
-const poemStore = usePoemStore()
-const authStore = useAuthStore()
-
-const isLoading = ref(false)
-const searchKeyword = ref('')
-const selectedDynasty = ref('')
-const favorites = ref<any[]>([])
-
-// 计算属性
-const dynasties = computed(() => {
-  const dynastiesSet = new Set<string>()
-  favorites.value.forEach(fav => {
-    if (fav.poems?.dynasty) {
-      dynastiesSet.add(fav.poems.dynasty)
-    }
-  })
-  return Array.from(dynastiesSet)
-})
-
-const filteredFavorites = computed(() => {
-  return favorites.value.filter(favorite => {
-    const matchesKeyword = !searchKeyword.value || 
-      favorite.poems?.title?.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
-      favorite.poems?.content?.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
-      favorite.poems?.poem_authors?.name?.toLowerCase().includes(searchKeyword.value.toLowerCase())
-    
-    const matchesDynasty = !selectedDynasty.value || 
-      favorite.poems?.dynasty === selectedDynasty.value
-    
-    return matchesKeyword && matchesDynasty
-  })
-})
-
-// 生命周期
-onMounted(async () => {
-  await loadFavorites()
-})
-
-// 方法
-const loadFavorites = async () => {
-  if (!authStore.user) {
-    ElMessage.warning('请先登录后再查看收藏')
-    return
-  }
-
-  isLoading.value = true
-  try {
-    await poemStore.fetchUserFavorites(authStore.user.id)
-    favorites.value = poemStore.userFavorites
-  } catch (error) {
-    console.error('加载收藏失败:', error)
-    ElMessage.error('加载收藏失败')
-  } finally {
-    isLoading.value = false
-  }
-}
-
-const filterFavorites = () => {
-  // 过滤逻辑已在计算属性中处理
-}
-
-const viewPoemDetail = (poemId: string) => {
-  if (poemId) {
-    router.push(`/poem/${poemId}`)
-  }
-}
-
-const removeFavorite = async (favoriteId: string) => {
-  try {
-    await ElMessageBox.confirm(
-      '确定要取消收藏吗？',
-      '取消收藏',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
-
-    if (authStore.user) {
-      await poemStore.removeFavorite(favoriteId, authStore.user.id)
-      await loadFavorites() // 重新加载收藏列表
-      ElMessage.success('已取消收藏')
-    }
-  } catch (error) {
-    if (error !== 'cancel') {
-      console.error('取消收藏失败:', error)
-      ElMessage.error('取消收藏失败')
-    }
-  }
-}
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
-const goToHome = () => {
-  router.push('/')
-}
-</script>
-
-<style scoped lang="scss">
-.page-header {
-  background: #FBF5E6;
-  border-bottom: 1px solid #E8DEC5;
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 20px;
-    
-    h1 {
-      margin: 0 0 6px;
-      color: var(--primary-color);
-      letter-spacing: 4px;
-    }
-    
-    p {
-      margin: 0;
-      color: var(--text-light);
-    }
-  }
-}
-
-.container {
-  max-width: 1200px;
+<style scoped>
+.favorites-container {
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.loading-container {
+.favorites-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-height: 300px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e4e7ed;
+  padding-bottom: 20px;
+}
+
+.favorites-header h1 {
+  color: #303133;
+  margin: 0;
+}
+
+.favorites-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.favorites-info span {
+  color: #606266;
+  font-size: 14px;
+}
+
+.loading-container {
+  padding: 40px 0;
 }
 
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
-  color: var(--text-light);
-  
-  .empty-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-  }
-  
-  h3 {
-    margin: 0 0 12px;
-    color: var(--text-color);
-  }
-  
-  p {
-    margin: 0 0 24px;
-    line-height: 1.6;
-  }
-}
-
-.filters {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  
-  .search-input {
-    flex: 1;
-    max-width: 400px;
-  }
-  
-  .dynasty-filter {
-    width: 200px;
-  }
+  padding: 60px 0;
 }
 
 .favorites-list {
-  display: grid;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.favorite-card {
-  background: #FBF5E6;
-  border: 1px solid #E8DEC5;
-  border-radius: 12px;
+.favorite-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 20px;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px;
+  background: #fff;
   transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-content {
-    .poem-title {
-      margin: 0 0 8px;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--primary-color);
-    }
-    
-    .poem-author {
-      margin: 0 0 12px;
-      color: var(--text-light);
-      font-size: 14px;
-    }
-    
-    .poem-excerpt {
-      margin: 0 0 16px;
-      color: var(--text-color);
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    
-    .card-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      
-      .added-date {
-        color: var(--text-light);
-        font-size: 12px;
-      }
-      
-      .action-buttons {
-        display: flex;
-        gap: 12px;
-      }
-    }
-  }
 }
 
-.no-results {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-light);
+.favorite-item:hover {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.poem-content {
+  flex: 1;
+}
+
+.poem-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+  margin: 0 0 8px 0;
+}
+
+.poem-author {
+  font-size: 14px;
+  color: #909399;
+  margin: 0 0 12px 0;
+}
+
+.poem-text {
+  color: #606266;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: 0;
+  max-height: 80px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.poem-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 20px;
 }
 
 @media (max-width: 768px) {
-  .filters {
+  .favorites-header {
     flex-direction: column;
-    
-    .search-input {
-      max-width: none;
-    }
-    
-    .dynasty-filter {
-      width: 100%;
-    }
+    align-items: flex-start;
+    gap: 15px;
   }
   
-  .favorite-card {
-    .card-actions {
-      flex-direction: column;
-      gap: 12px;
-      align-items: flex-start;
-      
-      .action-buttons {
-        width: 100%;
-        justify-content: flex-end;
-      }
-    }
+  .favorite-item {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .poem-actions {
+    flex-direction: row;
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-end;
   }
 }
 </style>

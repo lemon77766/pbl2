@@ -20,7 +20,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // 数据库表名常量
 export const TABLES = {
   POEMS: 'poems',
-  POEM_AUTHORS: 'poem_authors',
+  AUTHORS: 'poem_authors',
   POEM_ANALYSIS: 'poem_analysis',
   POEM_KEYWORDS: 'poem_keywords',
   USER_FAVORITES: 'user_favorites',
@@ -46,7 +46,7 @@ export type Database = {
         Insert: Omit<Database['public']['Tables']['poems']['Row'], 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Database['public']['Tables']['poems']['Insert']>
       }
-      poem_authors: {
+      authors: {
         Row: {
           id: string
           name: string
@@ -55,8 +55,8 @@ export type Database = {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['poem_authors']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['poem_authors']['Insert']>
+        Insert: Omit<Database['public']['Tables']['authors']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['authors']['Insert']>
       }
       poem_analysis: {
         Row: {

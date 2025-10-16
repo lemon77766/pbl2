@@ -1,5 +1,5 @@
 -- 创建诗词作者表
-CREATE TABLE IF NOT EXISTS poem_authors (
+CREATE TABLE IF NOT EXISTS authors (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     biography TEXT,
@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS user_notes (
 CREATE INDEX IF NOT EXISTS idx_poems_title ON poems(title);
 CREATE INDEX IF NOT EXISTS idx_poems_author_id ON poems(author_id);
 CREATE INDEX IF NOT EXISTS idx_poems_dynasty ON poems(dynasty);
-CREATE INDEX IF NOT EXISTS idx_poem_authors_name ON poem_authors(name);
-CREATE INDEX IF NOT EXISTS idx_poem_authors_dynasty ON poem_authors(dynasty);
+CREATE INDEX IF NOT EXISTS idx_authors_name ON authors(name);
+CREATE INDEX IF NOT EXISTS idx_authors_dynasty ON authors(dynasty);
 CREATE INDEX IF NOT EXISTS idx_poem_analysis_poem_id ON poem_analysis(poem_id);
 CREATE INDEX IF NOT EXISTS idx_poem_keywords_poem_id ON poem_keywords(poem_id);
 CREATE INDEX IF NOT EXISTS idx_user_favorites_user_id ON user_favorites(user_id);
@@ -85,12 +85,12 @@ ALTER TABLE user_notes ENABLE ROW LEVEL SECURITY;
 
 -- 创建诗词全文搜索索引
 CREATE INDEX IF NOT EXISTS idx_poems_content_search ON poems USING gin(to_tsvector('chinese', title || ' ' || content));
-CREATE INDEX IF NOT EXISTS idx_poem_authors_search ON poem_authors USING gin(to_tsvector('chinese', name || ' ' || biography));
+CREATE INDEX IF NOT EXISTS idx_authors_search ON authors USING gin(to_tsvector('chinese', name || ' ' || biography));
 
 -- 创建行级安全策略
 -- 诗词相关表允许公开读取
 CREATE POLICY "允许公开读取诗词" ON poems FOR SELECT USING (true);
-CREATE POLICY "允许公开读取作者" ON poem_authors FOR SELECT USING (true);
+CREATE POLICY "允许公开读取作者" ON authors FOR SELECT USING (true);
 CREATE POLICY "允许公开读取赏析" ON poem_analysis FOR SELECT USING (true);
 CREATE POLICY "允许公开读取关键词" ON poem_keywords FOR SELECT USING (true);
 
@@ -113,7 +113,7 @@ $$ language 'plpgsql';
 CREATE TRIGGER update_poems_updated_at BEFORE UPDATE ON poems
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_poem_authors_updated_at BEFORE UPDATE ON poem_authors
+CREATE TRIGGER update_authors_updated_at BEFORE UPDATE ON authors
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_poem_analysis_updated_at BEFORE UPDATE ON poem_analysis
