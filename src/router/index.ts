@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import('@/views/FavoritesView.vue')
     },
     {
+      path: '/search',
+      name: 'search',
+      component: () => import('@/views/SearchView.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/'
     }

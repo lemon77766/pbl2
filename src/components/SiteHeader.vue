@@ -30,8 +30,7 @@ const keyword = ref('')
 
 const goSearch = () => {
   if (!keyword.value.trim()) return
-  // 暂无搜索页，保持在首页并带查询参数（后续可接入真正搜索页）
-  router.push({ path: '/', query: { q: keyword.value.trim() } })
+  router.push({ path: '/search', query: { q: keyword.value.trim() } })
 }
 </script>
 

@@ -81,7 +81,7 @@ const eras: Era[] = [
     poets: '屈原、宋玉',
     genres: '四言诗、骚体',
     image:
-      '/history-pre-qin.jpg'
+      '/images/history-pre-qin.jpg'
   },
   {
     id: 'han-wei',
@@ -93,7 +93,7 @@ const eras: Era[] = [
     poets: '曹操、曹丕、曹植、谢灵运',
     genres: '乐府诗、五言诗',
     image:
-      '/history-han-wei.jpg'
+      '/images/history-han-wei.jpg'
   },
   {
     id: 'tang',
@@ -105,7 +105,7 @@ const eras: Era[] = [
     poets: '李白、杜甫、王维、白居易',
     genres: '五律、七律、绝句',
     image:
-      '/history-tang.jpg'
+      '/images/history-tang.jpg'
   },
   {
     id: 'song',
@@ -117,7 +117,7 @@ const eras: Era[] = [
     poets: '苏轼、辛弃疾、李清照、柳永',
     genres: '小令、中调、长调',
     image:
-      '/history-song.jpg'
+      '/images/history-song.jpg'
   },
   {
     id: 'yuan',
@@ -129,7 +129,7 @@ const eras: Era[] = [
     poets: '关汉卿、马致远、王实甫',
     genres: '小令、套数',
     image:
-      '/history-yuan.jpg'
+      '/images/history-yuan.jpg'
   },
   {
     id: 'ming',
@@ -141,7 +141,7 @@ const eras: Era[] = [
     poets: '高启、王世贞、袁宏道',
     genres: '律诗、绝句、杂体',
     image:
-      '/history-ming.jpg'
+      '/images/history-ming.jpg'
   },
   {
     id: 'qing',
@@ -153,7 +153,7 @@ const eras: Era[] = [
     poets: '纳兰性德、龚自珍、黄遵宪',
     genres: '近体诗、词',
     image:
-      '/history-qing.jpg'
+      '/images/history-qing.jpg'
   },
   {
     id: 'modern',
@@ -165,7 +165,7 @@ const eras: Era[] = [
     poets: '闻一多、徐志摩、余光中',
     genres: '自由诗、旧体新作',
     image:
-      '/history-modern.jpg'
+      '/images/history-modern.jpg'
   }
 ]
 </script>

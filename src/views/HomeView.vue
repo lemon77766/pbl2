@@ -5,6 +5,33 @@
 
     <!-- 横幅 Hero -->
     <section class="hero">
+      <div class="hero-inner">
+        <h1>古韵诗语</h1>
+        <p>探索中华古典诗词的无限魅力</p>
+        
+        <!-- 搜索框 -->
+        <div class="search-container">
+          <el-input
+            v-model="keyword"
+            placeholder="搜索诗词、作者或关键词..."
+            size="large"
+            @keyup.enter="goSearch"
+            clearable
+          >
+            <template #prefix>
+              <el-icon><Search /></el-icon>
+            </template>
+          </el-input>
+          <el-button 
+            type="primary" 
+            size="large" 
+            @click="goSearch"
+            class="search-btn"
+          >
+            搜索
+          </el-button>
+        </div>
+      </div>
       <div class="ink-bg" aria-hidden="true"></div>
     </section>
 
@@ -105,7 +132,7 @@ const keyword = ref('')
 
 const goSearch = () => {
   if (!keyword.value.trim()) return
-  router.push({ path: '/', query: { q: keyword.value.trim() } })
+  router.push({ path: '/search', query: { q: keyword.value.trim() } })
 }
 
 const goExplore = () => {
@@ -113,11 +140,11 @@ const goExplore = () => {
 }
 
 const gallery = [
-  { title: '观书法', desc: '帖学流韵，笔意生动', img: '/gallery1.jpg' },
-  { title: '品唐风', desc: '盛唐气象，雄浑飘逸', img: '/gallery2.jpg' },
-  { title: '赏宋词', desc: '清婉细腻，小令婀娜', img: '/gallery3.jpg' },
-  { title: '踏山水', desc: '烟岚云岫，月白风清', img: '/gallery4.jpg' },
-  { title: '寻名句', desc: '一字千金，回味无穷', img: '/gallery5.jpg' }
+  { title: '观书法', desc: '帖学流韵，笔意生动', img: '/images/gallery1.jpg' },
+  { title: '品唐风', desc: '盛唐气象，雄浑飘逸', img: '/images/gallery2.jpg' },
+  { title: '赏宋词', desc: '清婉细腻，小令婀娜', img: '/images/gallery3.jpg' },
+  { title: '踏山水', desc: '烟岚云岫，月白风清', img: '/images/gallery4.jpg' },
+  { title: '寻名句', desc: '一字千金，回味无穷', img: '/images/gallery5.jpg' }
 ]
 </script>
 
@@ -132,12 +159,12 @@ const gallery = [
 .hero {
   position: relative;
   overflow: hidden;
-  background: url("/hero-banner.jpg") top center no-repeat;
+  background: url("/images/hero-banner.jpg") top center no-repeat;
   background-size: cover;
-  min-height: 360px; /* 横幅高度，保证完整展示 */
+  min-height: 400px; /* 增加高度以容纳搜索框 */
   margin-bottom: 32px; /* 与下方内容留白 */
   .hero-inner {
-    padding: 56px 20px 80px;
+    padding: 80px 20px 100px;
     text-align: center;
     h1 {
       margin: 0 0 10px;
@@ -146,9 +173,31 @@ const gallery = [
       letter-spacing: 1px;
     }
     p {
-      margin: 0;
+      margin: 0 0 30px;
       color: var(--text-light);
       font-size: 16px;
+    }
+    
+    .search-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+      
+      :deep(.el-input) {
+        flex: 1;
+      }
+      
+      .search-btn {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        
+        &:hover {
+          background-color: #8B6B3D;
+          border-color: #8B6B3D;
+        }
+      }
     }
   }
   .ink-bg { display: none; }
@@ -173,7 +222,7 @@ const gallery = [
     border-radius: 12px;
     background:
       linear-gradient(180deg, rgba(156,123,62,.08), rgba(214,179,112,.05)),
-      url('/poem.png') center/cover no-repeat;
+      url('/images/poem.png') center/cover no-repeat;
     min-height: 260px;
   }
 
