@@ -129,12 +129,16 @@ const goFavorites = () => {
   router.push('/favorites')
 }
 
+const getImageUrl = (name: string) => {
+  return new URL(`../../images/${name}`, import.meta.url).href
+}
+
 const gallery = [
-  { title: '观书法', desc: '帖学流韵，笔意生动', img: '/images/gallery1.jpg' },
-  { title: '品唐风', desc: '盛唐气象，雄浑飘逸', img: '/images/gallery2.jpg' },
-  { title: '赏宋词', desc: '清婉细腻，小令婀娜', img: '/images/gallery3.jpg' },
-  { title: '踏山水', desc: '烟岚云岫，月白风清', img: '/images/gallery4.jpg' },
-  { title: '寻名句', desc: '一字千金，回味无穷', img: '/images/gallery5.jpg' }
+  { title: '观书法', desc: '帖学流韵，笔意生动', img: getImageUrl('gallery1.jpg') },
+  { title: '品唐风', desc: '盛唐气象，雄浑飘逸', img: getImageUrl('gallery2.jpg') },
+  { title: '赏宋词', desc: '清婉细腻，小令婀娜', img: getImageUrl('gallery3.jpg') },
+  { title: '踏山水', desc: '烟岚云岫，月白风清', img: getImageUrl('gallery4.jpg') },
+  { title: '寻名句', desc: '一字千金，回味无穷', img: getImageUrl('gallery5.jpg') }
 ]
 </script>
 
