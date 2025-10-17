@@ -1,7 +1,7 @@
 <template>
   <header class="nav">
     <div class="container">
-      <div class="brand">中国诗词</div>
+      <div class="brand">诗词赏析</div>
       <nav class="links">
         <router-link to="/" class="nav-link" exact-active-class="router-link-active">诗词首页</router-link>
         <router-link to="/history" class="nav-link">诗词历史</router-link>

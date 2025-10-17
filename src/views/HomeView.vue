@@ -36,7 +36,6 @@
         <div class="cards">
           <div v-for="item in gallery" :key="item.title" class="card">
             <div class="thumb" :style="{ backgroundImage: 'url(' + item.img + ')' }"></div>
-            <button class="fav-btn" aria-label="收藏">❤</button>
             <div class="meta">
               <div class="title">{{ item.title }}</div>
               <div class="desc">{{ item.desc }}</div>
@@ -70,19 +69,50 @@
           <div class="footer-col">
             <h4 class="footer-subtitle">关于我们</h4>
             <ul class="footer-links">
-              <li><a href="/">项目介绍</a></li>
-              <li><a href="/">团队成员</a></li>
-              <li><a href="/">联系我们</a></li>
-              <li><a href="/">版权声明</a></li>
+              <li>
+                <el-tooltip
+                  content="3403038177@qq.com"
+                  placement="right"
+                  effect="dark"
+                  popper-class="footer-tooltip"
+                >
+                  <a href="#" @click.prevent>联系邮箱</a>
+                </el-tooltip>
+              </li>
+              <li>
+                <el-tooltip
+                  content="本站部分内容来自网络，若有侵权，请联系我们删除。"
+                  placement="right"
+                  effect="dark"
+                  popper-class="footer-tooltip"
+                >
+                  <a href="#" @click.prevent>版权声明</a>
+                </el-tooltip>
+              </li>
             </ul>
           </div>
 
           <div class="footer-col">
             <h4 class="footer-subtitle">关注我们</h4>
             <div class="socials">
-              <a href="#" aria-label="抖音" class="soc">抖</a>
-              <a href="#" aria-label="微信" class="soc">微</a>
-              <a href="#" aria-label="微博" class="soc">博</a>
+              <el-tooltip placement="top" effect="light" popper-class="qr-tooltip">
+                <template #content>
+                  <img src="/images/douyin_qr.png" alt="抖音二维码" class="qr-code-img" />
+                </template>
+                <a href="#" aria-label="抖音" class="soc">抖</a>
+              </el-tooltip>
+              <el-tooltip placement="top" effect="light" popper-class="qr-tooltip">
+                <template #content>
+                  <img src="/images/wechat_qr.png" alt="微信二维码" class="qr-code-img" />
+                </template>
+                <a href="#" aria-label="微信" class="soc">微</a>
+              </el-tooltip>
+              <el-tooltip placement="top" effect="light" popper-class="qr-tooltip">
+                <template #content>
+                  <img src="/images/weibo_qr.png" alt="微博二维码" class="qr-code-img" />
+                </template>
+                <a href="#" aria-label="微博" class="soc">博</a>
+              </el-tooltip>
             </div>
             <p class="qr-tip">扫码关注公众号获取最新资讯</p>
           </div>
@@ -90,7 +120,8 @@
 
         <div class="footer-sep"></div>
         <div class="footer-bottom">
-          <span>© {{ new Date().getFullYear() }} 中国诗词 • 保留所有权利</span>
+          <span>© {{ new Date().getFullYear() }} 诗词赏析 • 保留所有权利</span>
+          <p style="margin-top: 8px;">免责声明: 本站信息仅供学习参考，不构成任何建议。</p>
         </div>
       </div>
     </footer>
@@ -372,6 +403,23 @@ const gallery = [
     font-size: 12px;
     text-align: center;
   }
+}
+
+:deep(.footer-tooltip) {
+  font-size: 16px;
+  max-width: 220px;
+}
+
+:deep(.qr-tooltip) {
+  padding: 0 !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.qr-code-img {
+  display: block;
+  width: 120px; /* Adjust size as needed */
+  height: 120px; /* Adjust size as needed */
 }
 
 @media (max-width: 1024px) {
