@@ -72,12 +72,16 @@ const setGenre = (v: string) => (activeGenre.value = v)
 const setEra   = (v: string) => (activeEra.value = v)
 const setStyle = (v: string) => (activeStyle.value = v)
 
+const getImageUrl = (name: string) => {
+  return new URL(`../../images/${name}`, import.meta.url).href
+}
+
 const data: Item[] = [
-  { id: 1, title: '春江花月夜', author: '张若虚', era: '唐', genre: '律诗', style: '山水', quote: '江天一色无纤尘，皎皎空中孤月轮', img: '/images/like1.png' },
-  { id: 2, title: '登鹳雀楼', author: '王之涣', era: '唐', genre: '绝句', style: '边塞', quote: '欲穷千里目，更上一层楼', img: '/images/like2.png' },
-  { id: 3, title: '水调歌头', author: '苏轼', era: '宋', genre: '宋词', style: '豪放', quote: '但愿人长久，千里共婵娟', img: '/images/like3.png' },
-  { id: 4, title: '青玉案·元夕', author: '辛弃疾', era: '宋', genre: '宋词', style: '婉约', quote: '众里寻他千百度，蓦然回首，那人却在，灯火阑珊处', img: '/images/like4.png' },
-  { id: 5, title: '天净沙·秋思', author: '马致远', era: '元', genre: '元曲', style: '婉约', quote: '枯藤老树昏鸦，小桥流水人家', img: '/images/like5.png' }
+  { id: 1, title: '春江花月夜', author: '张若虚', era: '唐', genre: '律诗', style: '山水', quote: '江天一色无纤尘，皎皎空中孤月轮', img: getImageUrl('like1.png') },
+  { id: 2, title: '登鹳雀楼', author: '王之涣', era: '唐', genre: '绝句', style: '边塞', quote: '欲穷千里目，更上一层楼', img: getImageUrl('like2.png') },
+  { id: 3, title: '水调歌头', author: '苏轼', era: '宋', genre: '宋词', style: '豪放', quote: '但愿人长久，千里共婵娟', img: getImageUrl('like3.png') },
+  { id: 4, title: '青玉案·元夕', author: '辛弃疾', era: '宋', genre: '宋词', style: '婉约', quote: '众里寻他千百度，蓦然回首，那人却在，灯火阑珊处', img: getImageUrl('like4.png') },
+  { id: 5, title: '天净沙·秋思', author: '马致远', era: '元', genre: '元曲', style: '婉约', quote: '枯藤老树昏鸦，小桥流水人家', img: getImageUrl('like5.png') }
 ]
 
 const filtered = computed(() => {

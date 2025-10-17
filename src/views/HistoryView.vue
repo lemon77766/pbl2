@@ -70,6 +70,10 @@ type Era = {
   image: string
 }
 
+const getImageUrl = (name: string) => {
+  return new URL(`../../images/${name}`, import.meta.url).href
+}
+
 const eras: Era[] = [
   {
     id: 'pre-qin',
@@ -80,8 +84,7 @@ const eras: Era[] = [
     tags: ['诗经', '楚辞', '雅颂', '骚体'],
     poets: '屈原、宋玉',
     genres: '四言诗、骚体',
-    image:
-      '/images/history-pre-qin.jpg'
+    image: getImageUrl('history-pre-qin.jpg')
   },
   {
     id: 'han-wei',
@@ -92,8 +95,7 @@ const eras: Era[] = [
     tags: ['乐府', '建安风骨', '山水诗'],
     poets: '曹操、曹丕、曹植、谢灵运',
     genres: '乐府诗、五言诗',
-    image:
-      '/images/history-han-wei.jpg'
+    image: getImageUrl('history-han-wei.jpg')
   },
   {
     id: 'tang',
@@ -104,8 +106,7 @@ const eras: Era[] = [
     tags: ['近体诗', '盛唐', '边塞', '山水'],
     poets: '李白、杜甫、王维、白居易',
     genres: '五律、七律、绝句',
-    image:
-      '/images/history-tang.jpg'
+    image: getImageUrl('history-tang.jpg')
   },
   {
     id: 'song',
@@ -116,8 +117,7 @@ const eras: Era[] = [
     tags: ['宋词', '婉约', '豪放', '理趣'],
     poets: '苏轼、辛弃疾、李清照、柳永',
     genres: '小令、中调、长调',
-    image:
-      '/images/history-song.jpg'
+    image: getImageUrl('history-song.jpg')
   },
   {
     id: 'yuan',
@@ -128,8 +128,7 @@ const eras: Era[] = [
     tags: ['元曲', '杂剧', '散曲'],
     poets: '关汉卿、马致远、王实甫',
     genres: '小令、套数',
-    image:
-      '/images/history-yuan.jpg'
+    image: getImageUrl('history-yuan.jpg')
   },
   {
     id: 'ming',
@@ -140,8 +139,7 @@ const eras: Era[] = [
     tags: ['复古', '性灵'],
     poets: '高启、王世贞、袁宏道',
     genres: '律诗、绝句、杂体',
-    image:
-      '/images/history-ming.jpg'
+    image: getImageUrl('history-ming.jpg')
   },
   {
     id: 'qing',
@@ -152,8 +150,7 @@ const eras: Era[] = [
     tags: ['格调', '词学', '考据'],
     poets: '纳兰性德、龚自珍、黄遵宪',
     genres: '近体诗、词',
-    image:
-      '/images/history-qing.jpg'
+    image: getImageUrl('history-qing.jpg')
   },
   {
     id: 'modern',
@@ -164,8 +161,7 @@ const eras: Era[] = [
     tags: ['新诗', '白话', '传承与创新'],
     poets: '闻一多、徐志摩、余光中',
     genres: '自由诗、旧体新作',
-    image:
-      '/images/history-modern.jpg'
+    image: getImageUrl('history-modern.jpg')
   }
 ]
 </script>
