@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { getPoemsByIds } from '@/api/poemApi'
 import type { Poem } from '@/api/poemApi'
+import SiteHeader from '@/components/SiteHeader.vue'
 
 const userStore = useUserStore()
 const favoritePoems = ref<Poem[]>([])
@@ -46,8 +47,17 @@ onMounted(() => {
 
 <template>
   <div class="favorites-container">
+    <SiteHeader />
+    
+    <!-- 页面标题区域 -->
+    <header class="page-header">
+      <div class="container">
+        <h1>我的收藏</h1>
+        <p>珍藏你喜爱的诗词，随时回味经典之美</p>
+      </div>
+    </header>
+
     <div class="favorites-header">
-      <h1>我的收藏</h1>
       <div class="favorites-info">
         <span>共收藏 {{ userStore.getFavoriteCount() }} 首诗词</span>
         <el-button 
@@ -79,7 +89,7 @@ onMounted(() => {
       >
         <div class="poem-content">
           <h3 class="poem-title">{{ poem.title }}</h3>
-          <p class="poem-author">作者：{{ poem.author_name }}</p>
+          <p class="poem-author">作者：{{ poem.authors?.name ?? '佚名' }}</p>
           <p class="poem-text">{{ poem.content.replace(/\\n/g, '\n') }}</p>
         </div>
         <div class="poem-actions">
@@ -103,25 +113,41 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .favorites-container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  color: var(--text-color);
+}
+
+/* 页面标题区域样式 */
+.page-header {
+  background: #FBF5E6;
+  border-bottom: 1px solid #E8DEC5;
+  .container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 28px 20px;
+  }
+  h1 { 
+    margin: 0 0 6px; 
+    color: var(--primary-color); 
+    letter-spacing: 4px; 
+  }
+  p  { 
+    margin: 0; 
+    color: var(--text-light); 
+  }
 }
 
 .favorites-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-bottom: 30px;
-  border-bottom: 1px solid #e4e7ed;
+  margin: 20px 0 30px;
+  border-bottom: 1px solid #E8DEC5;
   padding-bottom: 20px;
-}
-
-.favorites-header h1 {
-  color: #303133;
-  margin: 0;
 }
 
 .favorites-info {
@@ -131,7 +157,7 @@ onMounted(() => {
 }
 
 .favorites-info span {
-  color: #606266;
+  color: var(--text-light);
   font-size: 14px;
 }
 
@@ -155,15 +181,16 @@ onMounted(() => {
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px;
-  border: 1px solid #e4e7ed;
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid #E8DEC5;
+  border-radius: 14px;
+  background: #FBF5E6;
   transition: all 0.3s ease;
+  box-shadow: var(--shadow);
 }
 
 .favorite-item:hover {
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
 }
 
 .poem-content {
@@ -173,18 +200,18 @@ onMounted(() => {
 .poem-title {
   font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: var(--text-color);
   margin: 0 0 8px 0;
 }
 
 .poem-author {
   font-size: 14px;
-  color: #909399;
+  color: var(--text-light);
   margin: 0 0 12px 0;
 }
 
 .poem-text {
-  color: #606266;
+  color: var(--text-color);
   line-height: 1.6;
   white-space: pre-line;
   margin: 0;
@@ -200,6 +227,23 @@ onMounted(() => {
   flex-direction: column;
   gap: 8px;
   margin-left: 20px;
+}
+
+/* 统一按钮样式为土金主题 */
+:deep(.el-button--primary) {
+  --el-color-primary: var(--primary-color);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+:deep(.el-button--primary:hover),
+:deep(.el-button--primary:focus) {
+  background-color: #a05a2a;
+  border-color: #a05a2a;
+}
+
+:deep(.el-button--danger) {
+  --el-color-danger: #dc3545;
 }
 
 @media (max-width: 768px) {

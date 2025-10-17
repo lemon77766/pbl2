@@ -2,6 +2,9 @@
   <div class="home">
     <!-- 顶部导航（复用组件） -->
     <SiteHeader />
+    
+    <!-- AI聊天助手 -->
+    <AIChatAssistant />
 
     <!-- 横幅 Hero -->
     <section class="hero">
@@ -20,7 +23,7 @@
           <p>
             在这里，你可以浏览名家名篇、了解创作背景、欣赏书法碑帖，也能搜寻一句触动心弦的诗句。愿你在字里行间，遇见自我。
           </p>
-          <el-button type="primary" class="intro-btn" @click="goSearch">探索诗词</el-button>
+          <el-button type="primary" class="intro-btn" @click="goHistory">探索诗词</el-button>
         </div>
       </div>
       <div class="quote">山重水复疑无路，柳暗花明又一村。</div>
@@ -57,7 +60,7 @@
           <div class="footer-col">
             <h4 class="footer-subtitle">快捷链接</h4>
             <ul class="footer-links">
-              <li><a href="/" @click.prevent="goExplore">首页</a></li>
+
               <li><a href="/appreciation" @click.prevent="goAppreciation">诗词鉴赏</a></li>
               <li><a href="/history" @click.prevent="goHistory">诗词历史</a></li>
               <li><a href="/favorites" @click.prevent="goFavorites">我的收藏</a></li>
@@ -99,6 +102,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import SiteHeader from '@/components/SiteHeader.vue'
+import AIChatAssistant from '@/components/AIChatAssistant.vue'
 import { poemApi } from '@/api/poemApi'
 
 const router = useRouter()

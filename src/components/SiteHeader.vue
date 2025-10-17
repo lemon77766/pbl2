@@ -44,8 +44,8 @@ const goSearch = () => {
   border-bottom: 1px solid var(--border-color);
 
   .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     padding: 10px 20px;
     display: grid;
     grid-template-columns: 160px 1fr 280px;
@@ -62,12 +62,19 @@ const goSearch = () => {
   .links {
     display: flex;
     gap: 18px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
     .nav-link, a.nav-link {
       color: var(--text-color);
       text-decoration: none;
-      padding: 6px 10px;
-      border-radius: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid #E8DEC5;
+      background: #F9F4E6;
       transition: .2s;
+      white-space: nowrap;
     }
     /* 统一访问后样式，避免紫色与下划线 */
     .nav-link:visited,
@@ -75,11 +82,17 @@ const goSearch = () => {
       color: var(--text-color);
       text-decoration: none;
     }
-    .nav-link.router-link-active,
     .nav-link:hover,
     a.nav-link:hover {
+      background: #F6EBD2;
+      border-color: #E8DEC5;
+      color: var(--text-color);
+    }
+    .nav-link.router-link-active {
+      background: #EADFC7;
+      border-color: #D3C5A3;
       color: var(--primary-color);
-      background: color-mix(in oklab, var(--primary-color) 12%, transparent);
+      font-weight: 700;
     }
   }
 
@@ -90,7 +103,7 @@ const goSearch = () => {
 }
 @media (max-width: 768px) {
   .nav .container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 120px 1fr 220px;
   }
 }
 </style>
