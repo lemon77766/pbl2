@@ -1,11 +1,18 @@
 <template>
   <div id="app">
+    <SiteHeader v-if="showHeader" />
     <router-view />
   </div>
 </template>
 
 <script setup lang="ts">
-// 应用入口组件
+import SiteHeader from '@/components/SiteHeader.vue'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+const route = useRoute()
+const hideHeaderRoutes = new Set(['home', 'history', 'appreciation'])
+const showHeader = computed(() => !hideHeaderRoutes.has((route.name as string) || ''))
 </script>
 
 <style lang="scss">

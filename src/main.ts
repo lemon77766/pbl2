@@ -6,6 +6,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import App from './App.vue'
 import router from './router'
+import { useAuthStore } from '@/stores/auth'
 
 import './styles/main.scss'
 
@@ -18,6 +19,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.use(pinia)
+// 初始化鉴权会话
+const auth = useAuthStore()
+auth.initAuth()
 app.use(router)
 app.use(ElementPlus)
 

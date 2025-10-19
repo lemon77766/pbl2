@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <SiteHeader />
+
 
     <div class="container">
       <!-- 搜索框 -->
@@ -101,7 +101,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Search, ArrowRight, Star, StarFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import SiteHeader from '@/components/SiteHeader.vue'
+
 import { poemApi } from '@/api/poemApi'
 import { useUserStore } from '@/stores/user'
 

@@ -8,6 +8,7 @@
         <router-link to="/appreciation" class="nav-link">诗词鉴赏</router-link>
 
         <router-link to="/favorites" class="nav-link">我的收藏</router-link>
+        <router-link to="/auth" class="nav-link">账号</router-link>
       </nav>
       <div class="search">
         <el-input v-model="keyword" size="small" placeholder="搜索诗词/作者..." @keyup.enter="goSearch">

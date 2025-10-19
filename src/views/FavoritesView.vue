@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { getPoemsByIds } from '@/api/poemApi'
 import type { Poem } from '@/api/poemApi'
-import SiteHeader from '@/components/SiteHeader.vue'
+
 
 const userStore = useUserStore()
 const favoritePoems = ref<Poem[]>([])
@@ -47,7 +47,7 @@ onMounted(() => {
 
 <template>
   <div class="favorites-container">
-    <SiteHeader />
+
     
     <!-- 页面标题区域 -->
     <header class="page-header">

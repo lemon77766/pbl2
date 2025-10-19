@@ -1,28 +1,82 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { authApi, type AuthUser } from '@/api/authApi'
 
 export const useAuthStore = defineStore('auth', () => {
-  // 使用本地生成的用户ID，无需登录
-  const userId = ref<string>(generateUserId())
+  const user = ref<AuthUser | null>(null)
+  const loading = ref<boolean>(false)
+  const errorMsg = ref<string | null>(null)
 
-  // 生成唯一的用户ID
-  function generateUserId(): string {
-    // 从localStorage获取或生成新的用户ID
-    const storedId = localStorage.getItem('poem_app_user_id')
-    if (storedId) {
-      return storedId
+  const initAuth = async () => {
+    loading.value = true
+    try {
+      const current = await authApi.getUser()
+      user.value = current
+      // 监听会话变化
+      authApi.onAuthStateChange((u) => {
+        user.value = u
+      })
+    } catch (err: any) {
+      console.error('初始化鉴权失败:', err)
+      errorMsg.value = err?.message || '鉴权初始化失败'
+    } finally {
+      loading.value = false
     }
-    
-    const newId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-    localStorage.setItem('poem_app_user_id', newId)
-    return newId
   }
 
-  // 获取当前用户ID
-  const getUserId = () => userId.value
+  const signUp = async (email: string, password: string) => {
+    loading.value = true
+    errorMsg.value = null
+    try {
+      await authApi.signUp(email, password)
+      // Supabase 邮件确认后才能登录（如果项目启用了 email confirm）
+    } catch (err: any) {
+      errorMsg.value = err?.message || '注册失败'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const signIn = async (email: string, password: string) => {
+    loading.value = true
+    errorMsg.value = null
+    try {
+      await authApi.signIn(email, password)
+      const current = await authApi.getUser()
+      user.value = current
+    } catch (err: any) {
+      errorMsg.value = err?.message || '登录失败'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const signOut = async () => {
+    loading.value = true
+    errorMsg.value = null
+    try {
+      await authApi.signOut()
+      user.value = null
+    } catch (err: any) {
+      errorMsg.value = err?.message || '退出失败'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const getUserId = () => user.value?.id || ''
 
   return {
-    userId,
+    user,
+    loading,
+    errorMsg,
+    initAuth,
+    signUp,
+    signIn,
+    signOut,
     getUserId
   }
 })

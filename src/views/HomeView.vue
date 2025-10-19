@@ -406,8 +406,11 @@ const gallery = [
 }
 
 :deep(.footer-tooltip) {
-  font-size: 16px;
-  max-width: 220px;
+  font-size: 28px; /* 更大字体 */
+  max-width: 340px;
+  padding: 14px 16px; /* 增加内边距，改善可读性 */
+  line-height: 1.6;
+  font-weight: 600;
 }
 
 :deep(.qr-tooltip) {
@@ -438,5 +441,33 @@ const gallery = [
 }
 @media (max-width: 640px) {
   .gallery .cards { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
+<style lang="scss">
+/* 全局覆盖：确保 footer-tooltip 弹窗（Element Plus popper 渲染在 body）样式生效 */
+.footer-tooltip .el-tooltip__popper,
+.footer-tooltip {
+  max-width: 380px !important;
+  padding: 0 !important;
+}
+
+.footer-tooltip .el-tooltip__content {
+  font-size: 28px !important;
+  line-height: 1.6 !important;
+  padding: 16px 18px !important;
+  font-weight: 600 !important;
+  color: #FFF7E3 !important;
+  background: #2F281B !important; /* 与 footer 配色一致 */
+  border-radius: 8px !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25) !important;
+}
+
+/* 小屏适配 */
+@media (max-width: 640px) {
+  .footer-tooltip .el-tooltip__content {
+    font-size: 20px !important;
+    padding: 12px 14px !important;
+  }
 }
 </style>
